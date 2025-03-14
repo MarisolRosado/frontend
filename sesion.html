@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio</title>
+    <link rel="stylesheet" href="/CSS/sesion.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Inicio</h1>
+        <form id="loginForm">
+            <div class="input-box">
+                <label for="Email">Correo</label>
+                <input type="email" name="Email" id="Email" placeholder="Email" required>
+            </div>
+            <div class="input-box">
+                <label for="Password">Contraseña</label>
+                <input type="password" name="Password" id="Password" placeholder="Password" required>
+            </div>
+            <br>
+            <!-- Selector para elegir el tipo de usuario -->
+            <div class="input-box">
+                <label for="userType">Tipo de usuario</label>
+                <select id="userType" name="userType" required>
+                    <option value="client">Cliente</option>
+                    <option value="driver">Chofer</option>
+                </select>
+            </div>
+            <br>
+            <button type="submit" class="button">Inicio de sesión</button>
+            <div class="signup-link">
+                <a href="/registro.html">Registrarse</a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+       document.getElementById('loginForm').addEventListener('submit', function (e) {
+  e.preventDefault();
+
+  const email = document.getElementById('Email').value;
+  const password = document.getElementById('Password').value;
+
+  fetch('https://backend-b5g8.onrender.com/login', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ email, password })
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return response.json();
+  })
+  .then(data => {
+    if (data.success) {
+      alert(data.message);
+      localStorage.setItem('userType', data.userType);
+      window.location.href = '/inicio.html';
+    } else {
+      alert('Correo o contraseña incorrectos');
+    }
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    alert('Hubo un error al iniciar sesión');
+  });
+});
+       
+    </script>
+</body>
+</html>

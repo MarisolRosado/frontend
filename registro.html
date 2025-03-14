@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Datos</title>
+    <link rel="stylesheet" href="/CSS/registro.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Datos personales</h1>
+        <form id="registroForm">
+            <label for="nombre">Nombres</label>
+            <input type="text" id="nombre" required><br>
+            <label for="apellido">Apellidos</label>
+            <input type="text" id="apellido" required><br>
+            <label for="telefono">Telefono/Celular</label>
+            <input type="text" id="telefono" required><br>
+            <label for="edad">Edad</label>
+            <input type="number" id="edad" required><br>
+            <label for="email">Crear correo</label>
+            <input type="email" id="email" placeholder="Example@gmail.com" required><br>
+            <label for="password">Crear contraseña</label>
+            <input type="password" id="password" required><br>
+            <input type="button" value="Atras" onClick="history.go(-1);">
+            <button type="submit">Guardar</button>
+        </form>
+    </div>
+
+    <script>
+        // Update the fetch call in registro.html
+document.getElementById('registroForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const data = {
+        nombre: document.getElementById('nombre').value,
+        apellido: document.getElementById('apellido').value,
+        telefono: document.getElementById('telefono').value,
+        edad: document.getElementById('edad').value,
+        email: document.getElementById('email').value,
+        password: document.getElementById('password').value
+    };
+
+    fetch('https://backend-b5g8.onrender.com/save-client', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.text();
+    })
+    .then(result => {
+        alert('Registro exitoso!');
+        window.location.href = '/sesion.html';
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error al registrar: ' + error.message);
+    });
+});
+    </script>
+</body>
+</html>

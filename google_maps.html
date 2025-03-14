@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa de Choferes en Jipijapa</title>
+    <style>
+        #map {
+            height: 600px;
+            width: 100%;
+        }
+    </style>
+    <link rel="stylesheet" href="/CSS/mapa.css">
+</head>
+<body>
+    <h1>Mapa de Choferes Disponibles en Jipijapa</h1>
+    <div id="map"></div>
+
+    <!-- Google Maps API -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAhhbeQtkEoqZ2xPJZRhBkgRLTHGRtgwPI"></script>
+    <script>
+        // Inicializar el mapa
+        let map;
+        let markers = {};
+
+        function initMap() {
+            // Crear el mapa centrado en Jipijapa
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: { lat: -1.3480802472111146, lng: -80.58139020356211 }, // Coordenadas de Jipijapa
+                zoom: 14 // Ajusta el nivel de zoom según sea necesario
+            });
+
+            // Llamar al servidor para obtener los choferes
+            fetch('https://backend-b5g8.onrender.com/get-drivers')
+                .then(response => response.json())
+                .then(data => {
+                    // Procesar los datos y crear marcadores
+                    data.forEach(driver => {
+                        // Verificar que el chofer tenga coordenadas
+                        if (driver.lat && driver.lng) {
+                            const lat = parseFloat(driver.lat); // Convertir a número
+                            const lng = parseFloat(driver.lng); // Convertir a número
+
+                            // Verificar que las coordenadas sean números válidos
+                            if (isNaN(lat) || isNaN(lng)) {
+                                console.error('Coordenadas inválidas:', driver.lat, driver.lng);
+                                return;
+                            }
+
+                            const position = { lat, lng }; // Crear objeto LatLngLiteral
+
+                            // Crear el contenido del infoWindow
+                            const content = `
+                                <div>
+                                    <h3>${driver.nombre} ${driver.apellido}</h3>
+                                    <p>Placa: ${driver.placa}</p>
+                                    ${driver.imagen ? `<img src="http://localhost:3000/${driver.imagen}" alt="Imagen del chofer" width="100">` : ''}
+                                </div>
+                            `;
+
+                            // Crear marcador
+                            const marker = new google.maps.Marker({
+                                position: position,
+                                map: map,
+                                title: `${driver.nombre} ${driver.apellido} - Placa: ${driver.placa}`
+                            });
+
+                            // Crear infoWindow
+                            const infoWindow = new google.maps.InfoWindow({
+                                content: content
+                            });
+
+                            // Mostrar infoWindow al hacer clic en el marcador
+                            marker.addListener('click', () => {
+                                infoWindow.open(map, marker);
+                            });
+
+                            // Guardar el marcador en el objeto markers
+                            markers[driver.id] = marker;
+                        }
+                    });
+
+                    // Mover los marcadores aleatoriamente cada 5 segundos
+                    setInterval(moveMarkersRandomly, 5000);
+                })
+                .catch(error => {
+                    console.error('Error al obtener choferes:', error);
+                });
+        }
+
+        // Función para mover los marcadores aleatoriamente
+        function moveMarkersRandomly() {
+            Object.keys(markers).forEach((driverId) => {
+                const marker = markers[driverId];
+
+                // Generar nuevas coordenadas aleatorias cerca de la posición actual
+                const newLat = marker.getPosition().lat() + (Math.random() - 0.5) * 0.01;
+                const newLng = marker.getPosition().lng() + (Math.random() - 0.5) * 0.01;
+
+                // Actualizar la posición del marcador
+                marker.setPosition({ lat: newLat, lng: newLng });
+            });
+        }
+
+        // Inicializar el mapa cuando la página cargue
+        window.onload = initMap;
+    </script>
+</body>
+</html>
