@@ -49,12 +49,19 @@
 
                             const position = { lat, lng }; // Crear objeto LatLngLiteral
 
-                            // Crear el contenido del infoWindow
+                            // Modificar el contenido del infoWindow para incluir el teléfono
                             const content = `
-                                <div>
-                                    <h3>${driver.nombre} ${driver.apellido}</h3>
-                                    <p>Placa: ${driver.placa}</p>
-                                    ${driver.imagen ? `<img src="http://localhost:3000/${driver.imagen}" alt="Imagen del chofer" width="100">` : ''}
+                                <div style="padding: 15px; max-width: 250px;">
+                                    <h3 style="margin-bottom: 8px; color: #2c3e50;">${driver.nombre} ${driver.apellido}</h3>
+                                    <p style="margin: 5px 0;"><strong>Placa:</strong> ${driver.placa}</p>
+                                    <p style="margin: 5px 0;"><strong>Teléfono:</strong> <a href="tel:${driver.telefono}">${driver.telefono}</a></p>
+                                    ${driver.modelo ? `<p style="margin: 5px 0;"><strong>Vehículo:</strong> ${driver.modelo}</p>` : ''}
+                                    ${driver.imagen ? `
+                                        <div style="margin-top: 10px;">
+                                            <img src="https://backend-b5g8.onrender.com/${driver.imagen}" 
+                                                 alt="Imagen del chofer" 
+                                                 style="width: 100%; max-width: 150px; border-radius: 5px;">
+                                        </div>` : ''}
                                 </div>
                             `;
 
@@ -62,7 +69,15 @@
                             const marker = new google.maps.Marker({
                                 position: position,
                                 map: map,
-                                title: `${driver.nombre} ${driver.apellido} - Placa: ${driver.placa}`
+                                title: `${driver.nombre} ${driver.apellido}`,
+                                icon: {
+                                    path: google.maps.SymbolPath.CIRCLE,
+                                    fillColor: '#4CAF50',
+                                    fillOpacity: 0.9,
+                                    strokeWeight: 2,
+                                    strokeColor: '#FFF',
+                                    scale: 8
+                                }
                             });
 
                             // Crear infoWindow

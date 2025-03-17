@@ -1,0 +1,320 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #1e4d2b 0%, #2c3e50 100%);
+    min-height: 100vh;
+    padding: 2rem;
+    color: #2c3e50;
+}
+
+.registro-chofer {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    backdrop-filter: blur(10px);
+    padding: 3rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    animation: slideIn 0.6s ease-out;
+}
+
+h1 {
+    grid-column: 1 / -1;
+    font-size: 2.5rem;
+    color: #1e4d2b;
+    text-align: center;
+    margin-bottom: 2rem;
+    position: relative;
+}
+
+h1::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 4px;
+    background: #4CAF50;
+    border-radius: 2px;
+}
+
+.header-registro h1 {
+    color: #1b5e20;
+    font-size: 2.2em;
+    margin-bottom: 10px;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.1);
+}
+
+.header-registro p {
+    color: #2e7d32;
+    font-size: 1.1em;
+}
+
+#registroForm {
+    padding: 2rem;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #2c3e50;
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+input:focus {
+    border-color: #4CAF50;
+    box-shadow: 0 0 0 3px rgba(76,175,80,0.1);
+    outline: none;
+}
+
+input[type="file"] {
+    padding: 10px;
+    background: #f8f9fa;
+    border: 2px dashed #4CAF50;
+    cursor: pointer;
+}
+
+button {
+    width: 100%;
+    padding: 1rem;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 1.5rem;
+}
+
+button:hover {
+    background: #45a049;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(76,175,80,0.3);
+}
+
+.mapa-container {
+    margin-top: 30px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.maps-container {
+    position: relative;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+#map {
+    height: 500px;
+    border-radius: 15px;
+}
+
+#pac-input {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 25px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    font-size: 1rem;
+    z-index: 1;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .registro-chofer {
+        grid-template-columns: 1fr;
+        padding: 1.5rem;
+    }
+
+    #map {
+        height: 350px;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+}
+
+/* Añadir efecto de hover al formulario */
+.registro-chofer:hover {
+    transform: translateY(-5px);
+    transition: transform 0.3s ease;
+    box-shadow: 0 5px 35px rgba(0,0,0,0.3);
+}
+
+.coordenadas-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.direccion-group {
+    margin-bottom: 15px;
+}
+
+.controls {
+    margin: 10px;
+    padding: 10px;
+    width: calc(100% - 20px);
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+/* Estilo para campos readonly */
+input[readonly] {
+    background-color: #f5f5f5;
+    cursor: not-allowed;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+label {
+    font-weight: bold;
+    color: #555;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+input:focus {
+    outline: none;
+    border-color: #4CAF50;
+    box-shadow: 0 0 5px rgba(76,175,80,0.2);
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 20px;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+.maps-container {
+    margin-top: 20px;
+}
+
+#pac-input {
+    width: calc(100% - 20px);
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+/* Animaciones */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+input:focus::placeholder {
+    transform: translateY(-20px);
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+/* Estilos para mensajes de error */
+.error-message {
+    color: #d32f2f;
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+    display: none;
+}
+
+input:invalid + .error-message {
+    display: block;
+}
+
+/* Estilos para estados de carga */
+button.loading {
+    background: #cccccc;
+    cursor: not-allowed;
+    position: relative;
+}
+
+button.loading::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+    border-top-color: transparent;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}

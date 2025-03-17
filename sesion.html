@@ -30,46 +30,44 @@
             <br>
             <button type="submit" class="button">Inicio de sesión</button>
             <div class="signup-link">
-                <a href="/registro.html">Registrarse</a>
+                <a href="/seleccion_registro.html">Registrarse</a>
             </div>
         </form>
     </div>
 
     <script>
-       document.getElementById('loginForm').addEventListener('submit', function (e) {
-  e.preventDefault();
+    document.getElementById('loginForm').addEventListener('submit', function (e) {
+        e.preventDefault();
 
-  const email = document.getElementById('Email').value;
-  const password = document.getElementById('Password').value;
+        const email = document.getElementById('Email').value;
+        const password = document.getElementById('Password').value;
 
-  fetch('https://backend-b5g8.onrender.com/login', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ email, password })
-  })
-  .then(response => {
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    return response.json();
-  })
-  .then(data => {
-    if (data.success) {
-      alert(data.message);
-      localStorage.setItem('userType', data.userType);
-      window.location.href = '/inicio.html';
-    } else {
-      alert('Correo o contraseña incorrectos');
-    }
-  })
-  .catch(error => {
-    console.error('Error:', error);
-    alert('Hubo un error al iniciar sesión');
-  });
-});
-       
+        fetch('https://backend-b5g8.onrender.com/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email, password })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                localStorage.setItem('userType', data.userType);
+                // Redirigir según el tipo de usuario
+                if (data.userType === 'driver') {
+                    window.location.href = 'chofer_dashboard.html';
+                } else {
+                    window.location.href = 'inicio.html';
+                }
+            } else {
+                alert('Correo o contraseña incorrectos');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error al iniciar sesión');
+        });
+    });
     </script>
 </body>
 </html>
